@@ -1,8 +1,16 @@
-#--- instalace (pokud chybí) ---------------------
+#----------------------------------------------------------#
+# Load packages -----
+#----------------------------------------------------------#
+if(!isTRUE(require(tidyverse, quietly = TRUE))) {
+  install.packages("tidyverse", dependencies = TRUE); library(tidyverse)
+} else {
+  require(tidyverse)
+}
 
-#--- načtení knihoven -----------------------------
-library(pdftools)   # pdftools::pdf_text
-library(stringr)    # stringr::str_detect, stringr::str_extract, stringr::str_trim, stringr::str_replace_all
-library(dplyr)      # dplyr::tibble, dplyr::mutate, dplyr::case_when, dplyr::select, dplyr::rowwise, dplyr::ungroup, dplyr::filter, dplyr::arrange
-library(tidyr)      # tidyr::separate
+if(!isTRUE(require(pdftools, quietly = TRUE))) {
+  install.packages("pdftools", dependencies = TRUE); library(pdftools)
+} else {
+  require(pdftools)
+}
+
 
