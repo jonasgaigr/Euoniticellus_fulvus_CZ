@@ -46,7 +46,7 @@ for(i in seq_along(lines)) {
     buf_lines <- c(buf_lines, ln)
   }
 }
-# přidej poslední
+# add the final record
 if(!is.null(buf_lines)) {
   records <- append(records, list(list(text=buf_lines, start=buf_start)))
 }
@@ -60,20 +60,20 @@ df <- tibble(
 ) %>%
   rowwise() %>%
   mutate(
-    # vyber právě jeden species_map řádek, jehož interval obsahuje start
+    # select exactly one species_map row whose interval contains start
     Druh_full = {
       hit <- species_map %>% filter(start >= line_idx & start <= end_idx)
       if(nrow(hit)==1) hit$Druh_full else NA_character_
     }
   ) %>%
   ungroup() %>%
-  filter(!is.na(Druh_full)) %>%        # volitelné: zahodit záznamy bez druhu
+  filter(!is.na(Druh_full)) %>%        # optional: drop records without a species
   mutate(
-    # rozdělení Druh_full
+    # splitting Druh_full
     Druh        = str_extract(Druh_full, "^[A-Z][a-z]+(\\s\\([^)]*\\))?\\s[a-z]+"),
     Popis_druhu = str_extract(Druh_full, "(?<=\\().*(?=\\))"),
     
-    # extrakce ostatních polí
+    # extraction of other fields
     Ctverec  = str_extract(raw, "^\\d{4}"),
     Text     = str_trim(str_remove(raw, "^\\d{4}:")),
     Lokalita = str_extract(Text, "^.*?(?=\\d| \\()"),
@@ -113,7 +113,7 @@ print(df)
 ## 7) Export ----
 #--------------------------------------------------#
 # readr::write_csv(df, "nalezy_clean.csv")
- openxlsx::write.xlsx(
-   df, 
-   "Outputs/Data/nalezy_clean_Mertlik_2021.xlsx"
-   )
+openxlsx::write.xlsx(
+  df, 
+  "Outputs/Data/nalezy_clean_Mertlik_2021.xlsx"
+)
