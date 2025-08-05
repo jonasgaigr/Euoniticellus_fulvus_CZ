@@ -70,28 +70,35 @@ df <- tibble(
   filter(!is.na(Druh_full)) %>%        # optional: drop records without a species
   mutate(
     # splitting Druh_full
-    Druh        = str_extract(Druh_full, "^[A-Z][a-z]+(\\s\\([^)]*\\))?\\s[a-z]+"),
+    Druh = str_extract(Druh_full, "^[A-Z][a-z]+(\\s\\([^)]*\\))?\\s[a-z]+"),
     Popis_druhu = str_extract(Druh_full, "(?<=\\().*(?=\\))"),
-    
     # extraction of other fields
-    Ctverec  = str_extract(raw, "^\\d{4}"),
-    Text     = str_trim(str_remove(raw, "^\\d{4}:")),
+    Ctverec = str_extract(raw, "^\\d{4}"),
+    Text = str_trim(str_remove(raw, "^\\d{4}:")),
     Lokalita = str_extract(Text, "^.*?(?=\\d| \\()"),
-    Datum    = str_extract(raw, "\\d{1,2}\\.\\d{1,2}\\.\\d{4}"),
-    Pocet    = str_extract(raw, "\\d+ ?ex\\.|\\d+ ?♂|\\d+ ?♀"),
+    Datum = str_extract(raw, "\\d{1,2}\\.\\d{1,2}\\.\\d{4}"),
+    Pocet = str_extract(raw, "\\d+ ?ex\\.|\\d+ ?♂|\\d+ ?♀"),
     Substrat = str_extract(raw, "Cervus|Equus|ovčí pastvina|světelná UV past"),
-    Lat      = as.numeric(str_extract(raw, "\\d{2}\\.\\d+(?=N)")),
-    Lon      = as.numeric(str_extract(raw, "\\d{2}\\.\\d+(?=E)")),
-    Zpusob   = case_when(
-      str_detect(raw, "observ")                     ~ "observ.",
-      str_detect(raw, "leg\\. et coll\\.")          ~ "leg. et coll.",
+    Lat = as.numeric(str_extract(raw, "\\d{2}\\.\\d+(?=N)")),
+    Lon = as.numeric(str_extract(raw, "\\d{2}\\.\\d+(?=E)")),
+    Zpusob = case_when(
+      str_detect(raw, "observ") ~ "observ.",
+      str_detect(raw, "leg\\. et coll\\.") ~ "leg. et coll.",
       str_detect(raw, "leg\\.") & str_detect(raw, "det\\. et coll\\.") ~ "leg., det. et coll.",
-      TRUE                                          ~ NA_character_
+      TRUE ~ NA_character_
     ),
-    Autor    = case_when(
-      str_detect(raw, "Mertlik") ~ "J. Mertlik",
-      str_detect(raw, "Hron")    ~ "V. Hron",
-      TRUE                       ~ NA_character_
+    Autor = case_when(
+      str_detect(raw, "Mertlik")    ~ "J. Mertlik",
+      str_detect(raw, "Hron")       ~ "V. Hron",
+      str_detect(raw, "Mikát")      ~ "M. Mikát",
+      str_detect(raw, "Brabec")     ~ "M. Brabec",
+      str_detect(raw, "Jiříček")    ~ "V. Jiříček",
+      str_detect(raw, "Král")       ~ "D. Král",
+      str_detect(raw, "Pelikán")    ~ "J. Pelikán",
+      str_detect(raw, "Resl")       ~ "J. Resl",
+      str_detect(raw, "Trávníček")  ~ "P. Trávníček",
+      str_detect(raw, "Bunalski")   ~ "M. Bunalski",
+      TRUE                          ~ NA_character_
     ),
     Poznamka = str_extract(raw, "(lezl[^,]+|Březový potok[^,]+|pastvina[^,]+)")
   ) %>%
@@ -103,6 +110,16 @@ df <- tibble(
 #--------------------------------------------------#
 ## 5) Test ----
 #--------------------------------------------------#
+cat("Euoniticellus fulvus rows:", sum(df$Druh == "Euoniticellus fulvus"), "\n")
+cat("Bodilopsis rufa rows:", sum(df$Druh == "Bodilopsis rufa"), "\n")
+cat("Chilothorax conspurcatus rows:", sum(df$Druh == "Chilothorax conspurcatus"), "\n")
+
+df_debug <- tibble(start = vapply(records, `[[`, NA_integer_, "start")) %>%
+  rowwise() %>%
+  mutate(matches = paste(species_map$Druh_full[start >= species_map$line_idx & start <= species_map$end_idx], collapse = "; ")) %>%
+  ungroup()
+
+df_debug %>% filter(str_detect(matches, "Chilothorax conspurcatus"))
 
 #--------------------------------------------------#
 ## 6) Preview ----
