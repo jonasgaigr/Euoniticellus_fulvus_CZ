@@ -22,10 +22,10 @@ species_map <- tibble(
   line_idx  = sp_idx,
   Druh_full = sp_name
 ) %>%
+  distinct(Druh_full, .keep_all = TRUE) %>%  # keep only first occurrence of each species
   arrange(line_idx) %>%
-  mutate(
-    end_idx = lead(line_idx, default = length(lines)+1) - 1
-  )
+  mutate(end_idx = lead(line_idx, default = length(lines)+1) - 1)
+
 
 #--------------------------------------------------#
 ## 3) Group by occurrences ----
@@ -62,8 +62,10 @@ df <- tibble(
   mutate(
     # select exactly one species_map row whose interval contains start
     Druh_full = {
-      hit <- species_map %>% filter(start >= line_idx & start <= end_idx)
-      if(nrow(hit)==1) hit$Druh_full else NA_character_
+      hit <- species_map %>%
+        filter(line_idx <= start) %>%
+        slice_tail(n = 1)
+      if (nrow(hit) == 1) hit$Druh_full else NA_character_
     }
   ) %>%
   ungroup() %>%
@@ -116,10 +118,16 @@ cat("Chilothorax conspurcatus rows:", sum(df$Druh == "Chilothorax conspurcatus")
 
 df_debug <- tibble(start = vapply(records, `[[`, NA_integer_, "start")) %>%
   rowwise() %>%
-  mutate(matches = paste(species_map$Druh_full[start >= species_map$line_idx & start <= species_map$end_idx], collapse = "; ")) %>%
+  mutate(matches = {
+    hit <- species_map %>%
+      filter(line_idx <= start) %>%
+      slice_tail(n = 1)
+    if (nrow(hit) == 1) hit$Druh_full else NA_character_
+  }) %>%
   ungroup()
 
 df_debug %>% filter(str_detect(matches, "Chilothorax conspurcatus"))
+
 
 #--------------------------------------------------#
 ## 6) Preview ----
