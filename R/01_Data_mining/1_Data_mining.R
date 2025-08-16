@@ -1,6 +1,7 @@
 #----------------------------------------------------------#
 # Mertlik -----
 #----------------------------------------------------------#
+
 #--------------------------------------------------#
 ## 1) Load PDF ----
 #--------------------------------------------------#
@@ -13,19 +14,26 @@ lines    <- lines[lines != ""]
 #--------------------------------------------------#
 ## 2) Detect species headers ----
 #--------------------------------------------------#
-sp_pattern <- "^[A-Z][a-z]+(\\s\\([^)]*\\))?\\s[a-z]+\\s?\\(.*\\)$"
-is_sp      <- str_detect(lines, sp_pattern)
-sp_idx     <- which(is_sp)
-sp_name    <- lines[sp_idx]
 
+# Species names in format: "Genus species (Author, Year)" or "Genus (Subgenus) species (Author, Year)"
+sp_pattern <- "^([A-Z][a-z]+(?:\\s\\([^)]*\\))?\\s[a-z]+)\\s\\(.*\\)$"
+
+# Get all headers
+species_headers <- lines[str_detect(lines, sp_pattern)] %>% str_trim()
+
+# Build species map directly as separators
 species_map <- tibble(
-  line_idx  = sp_idx,
-  Druh_full = sp_name
+  line_idx  = which(lines %in% species_headers),
+  Druh_full = species_headers
 ) %>%
-  distinct(Druh_full, .keep_all = TRUE) %>%  # keep only first occurrence of each species
-  arrange(line_idx) %>%
-  mutate(end_idx = lead(line_idx, default = length(lines)+1) - 1)
+  arrange(line_idx)
 
+# Add an explicit "end_idx" = start of the next header - 1
+species_map <- species_map %>%
+  mutate(end_idx = dplyr::lead(line_idx, default = length(lines) + 1) - 1)
+
+# Quick check
+print(species_map, n = 20)
 
 #--------------------------------------------------#
 ## 3) Group by occurrences ----
@@ -60,11 +68,9 @@ df <- tibble(
 ) %>%
   rowwise() %>%
   mutate(
-    # select exactly one species_map row whose interval contains start
     Druh_full = {
       hit <- species_map %>%
-        filter(line_idx <= start) %>%
-        slice_tail(n = 1)
+        filter(start >= line_idx & start <= end_idx)
       if (nrow(hit) == 1) hit$Druh_full else NA_character_
     }
   ) %>%
@@ -127,7 +133,6 @@ df_debug <- tibble(start = vapply(records, `[[`, NA_integer_, "start")) %>%
   ungroup()
 
 df_debug %>% filter(str_detect(matches, "Chilothorax conspurcatus"))
-
 
 #--------------------------------------------------#
 ## 6) Preview ----
