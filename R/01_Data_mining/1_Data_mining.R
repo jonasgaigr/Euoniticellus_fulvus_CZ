@@ -6,6 +6,7 @@
 ## 0) Define input files ----
 #--------------------------------------------------#
 pdf_files <- c(
+  "Literature_rev/Mertlik_2019_Elateridarium.pdf",
   "Literature_rev/Mertlik_2020_Elateridarium.pdf",
   "Literature_rev/Mertlik_2021_Elateridarium.pdf"
 )
@@ -127,12 +128,22 @@ for (pdf_file in pdf_files) {
   #--------------------------------------------------#
   ## 5) Export ----
   #--------------------------------------------------#
-  output_file <- paste0(
+  output_file_xlsx <- paste0(
     "Outputs/Data/nalezy_clean_",
     tools::file_path_sans_ext(basename(pdf_file)),
     ".xlsx"
   )
+  output_file_csv <- paste0(
+    "Outputs/Data/nalezy_clean_",
+    tools::file_path_sans_ext(basename(pdf_file)),
+    ".csv"
+  )
   
-  openxlsx::write.xlsx(df, output_file)
-  cat("✅ Exported to:", output_file, "\n\n")
+  openxlsx::write.xlsx(df, output_file_xlsx)
+  readr::write_csv(
+    df,
+    output_file_csv
+  )
+  cat("✅ Exported to:", output_file_xlsx, "\n\n")
+  cat("✅ Exported to:", output_file_csv, "\n\n")
 }
