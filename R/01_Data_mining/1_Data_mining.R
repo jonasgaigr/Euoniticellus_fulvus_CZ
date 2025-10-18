@@ -11,14 +11,14 @@ pdf_files <- c(
 )
 
 #--------------------------------------------------#
-## Loop through each PDF -----
+## Loop through each PDF ----
 #--------------------------------------------------#
 for (pdf_file in pdf_files) {
   
   cat("Processing:", pdf_file, "\n")
   
   #--------------------------------------------------#
-  ### 1) Load PDF ----
+  ## 1) Load PDF ----
   #--------------------------------------------------#
   pages <- pdftools::pdf_text(pdf_file)
   lines <- unlist(strsplit(pages, "\n"))
@@ -26,7 +26,7 @@ for (pdf_file in pdf_files) {
   lines <- lines[lines != ""]
   
   #--------------------------------------------------#
-  ### 2) Detect species headers ----
+  ## 2) Detect species headers ----
   #--------------------------------------------------#
   # Species names in format: "Genus species (Author, Year)" or "Genus (Subgenus) species (Author, Year)"
   sp_pattern <- "^([A-Z][a-z]+(?:\\s\\([^)]*\\))?\\s[a-z]+)\\s\\(.*\\)$"
@@ -43,7 +43,7 @@ for (pdf_file in pdf_files) {
     dplyr::mutate(end_idx = dplyr::lead(line_idx, default = length(lines) + 1) - 1)
   
   #--------------------------------------------------#
-  ### 3) Group by occurrences ----
+  ## 3) Group by occurrences ----
   #--------------------------------------------------#
   records <- list()
   buf_lines <- NULL
@@ -68,7 +68,7 @@ for (pdf_file in pdf_files) {
   }
   
   #--------------------------------------------------#
-  ### 4) Build dataframe and assign species by intervals ----
+  ## 4) Build dataframe and assign species by intervals ----
   #--------------------------------------------------#
   df <- tibble::tibble(
     raw   = vapply(records, function(x) paste(x$text, collapse = " "), ""),
@@ -114,15 +114,18 @@ for (pdf_file in pdf_files) {
         stringr::str_detect(raw, "Bunalski")   ~ "M. Bunalski",
         TRUE                                   ~ NA_character_
       ),
-      Poznamka = stringr::str_extract(raw, "(lezl[^,]+|Březový potok[^,]+|pastvina[^,]+)")
+      Poznamka = stringr::str_extract(raw, "(lezl[^,]+|Březový potok[^,]+|pastvina[^,]+)"),
+      
+      # ✅ NEW: extract short locality (up to first comma or semicolon)
+      Lokalita_short = stringr::str_extract(Lokalita, "^[^,;]+")
     ) %>%
     dplyr::select(
-      Druh, Popis_druhu, Ctverec, Lokalita, Text, Datum,
+      Druh, Popis_druhu, Ctverec, Lokalita, Lokalita_short, Text, Datum,
       Pocet, Substrat, Lat, Lon, Zpusob, Autor, Poznamka
     )
   
   #--------------------------------------------------#
-  ### 5) Export ----
+  ## 5) Export ----
   #--------------------------------------------------#
   output_file <- paste0(
     "Outputs/Data/nalezy_clean_",
