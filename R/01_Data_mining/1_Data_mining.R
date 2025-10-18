@@ -29,13 +29,8 @@ for (pdf_file in pdf_files) {
   #--------------------------------------------------#
   ## 2) Detect species headers ----
   #--------------------------------------------------#
-  # Species names in format: "Genus species (Author, Year)" or "Genus (Subgenus) species (Author, Year)"
   sp_pattern <- "^([A-Z][a-z]+(?:\\s\\([^)]*\\))?\\s[a-z]+)\\s\\(.*\\)$"
-  
-  # Get all headers
   species_headers <- lines[stringr::str_detect(lines, sp_pattern)] %>% stringr::str_trim()
-  
-  # Build species map directly as separators
   species_map <- tibble::tibble(
     line_idx  = which(lines %in% species_headers),
     Druh_full = species_headers
@@ -62,8 +57,6 @@ for (pdf_file in pdf_files) {
       buf_lines <- c(buf_lines, ln)
     }
   }
-  
-  # add the final record
   if (!is.null(buf_lines)) {
     records <- append(records, list(list(text = buf_lines, start = buf_start)))
   }
@@ -91,7 +84,9 @@ for (pdf_file in pdf_files) {
       Ctverec  = stringr::str_extract(raw, "^\\d{4}"),
       Text     = stringr::str_trim(stringr::str_remove(raw, "^\\d{4}:")),
       Lokalita = stringr::str_extract(Text, "^.*?(?=\\d| \\()"),
-      Datum    = stringr::str_extract(raw, "\\d{1,2}\\.\\d{1,2}\\.\\d{4}"),
+      Datum_raw = stringr::str_extract(raw, "\\d{1,2}\\.\\d{1,2}\\.\\d{4}"),
+      # ✅ lubridate-compliant conversion
+      Datum = suppressWarnings(lubridate::dmy(Datum_raw)),
       Pocet    = stringr::str_extract(raw, "\\d+ ?ex\\.|\\d+ ?♂|\\d+ ?♀"),
       Substrat = stringr::str_extract(raw, "Cervus|Equus|ovčí pastvina|světelná UV past"),
       Lat      = as.numeric(stringr::str_extract(raw, "\\d{2}\\.\\d+(?=N)")),
@@ -116,13 +111,11 @@ for (pdf_file in pdf_files) {
         TRUE                                   ~ NA_character_
       ),
       Poznamka = stringr::str_extract(raw, "(lezl[^,]+|Březový potok[^,]+|pastvina[^,]+)"),
-      
-      # ✅ NEW: extract short locality (up to first comma or semicolon)
       Lokalita_short = stringr::str_extract(Lokalita, "^[^,;]+")
     ) %>%
     dplyr::select(
-      Druh, Popis_druhu, Ctverec, Lokalita, Lokalita_short, Text, Datum,
-      Pocet, Substrat, Lat, Lon, Zpusob, Autor, Poznamka
+      Druh, Popis_druhu, Ctverec, Lokalita, Lokalita_short, Text,
+      Datum, Pocet, Substrat, Lat, Lon, Zpusob, Autor, Poznamka
     )
   
   #--------------------------------------------------#
@@ -140,10 +133,8 @@ for (pdf_file in pdf_files) {
   )
   
   openxlsx::write.xlsx(df, output_file_xlsx)
-  readr::write_csv(
-    df,
-    output_file_csv
-  )
-  cat("✅ Exported to:", output_file_xlsx, "\n\n")
+  readr::write_csv(df, output_file_csv)
+  
+  cat("✅ Exported to:", output_file_xlsx, "\n")
   cat("✅ Exported to:", output_file_csv, "\n\n")
 }
