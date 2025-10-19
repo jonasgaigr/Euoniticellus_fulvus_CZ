@@ -1,7 +1,8 @@
 #----------------------------------------------------------#
 # Install and load packages -----
 #----------------------------------------------------------#
-packages <- c("tidyverse", "pdftools", "RCzechia")
+packages <- c("tidyverse", "pdftools", "RCzechia", "tidyterra", "raster",
+              "ggnewscale")
 
 for (pkg in packages) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
@@ -20,7 +21,7 @@ czechia_border <-
   ) %>%
   sf::st_transform(
     ., 
-    st_crs("+init=epsg:5514")
+    st_crs("+init=epsg:4326")
   ) 
 
 # Data on protected areas and mapping fields
@@ -37,12 +38,33 @@ getfeature_url_sitmap0rad <- paste0(
 sitmap <- sf::st_read(getfeature_url_sitmap0rad) %>%
   sf::st_transform(
     ., 
-    st_crs("+init=epsg:5514")
+    st_crs("+init=epsg:4326")
   ) %>%
   sf::st_filter(
     .,
     czechia_border  # crop by the border of Czechia
   )
+
+# Load rayshaded hill
+hill <- RCzechia::vyskopis("rayshaded", cropped = FALSE)
+
+# Optionally crop to Czechia bounding box
+czech_bbox <- czechia_border %>%
+  sf::st_transform(
+    .,
+    st_crs("+init=epsg:4326")
+    ) %>%
+  st_buffer(., 5000) %>%
+  st_bbox()
+
+hill_cropped <- terra::crop(hill, czech_bbox)
+
+# Reproject to 4326
+hill <- terra::project(hill_cropped, "EPSG:4326")
+
+rivers <- RCzechia::reky(resolution = "high") %>% 
+  filter(Major)
+  
 
 #----------------------------------------------------------#
 # Load occurrence data -----
