@@ -39,7 +39,7 @@ sitmap <- sf::st_read(getfeature_url_sitmap0rad) %>%
     ., 
     st_crs("+init=epsg:5514")
   ) %>%
-  sf::st_crop(
+  sf::st_filter(
     .,
     czechia_border  # crop by the border of Czechia
   )
