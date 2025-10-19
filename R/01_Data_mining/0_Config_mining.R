@@ -27,14 +27,14 @@ czechia_border <-
 endpoint <- "http://gis.nature.cz/arcgis/services/Aplikace/Opendata/MapServer/WFSServer?"
 caps_url <- base::paste0(endpoint, "request=GetCapabilities&service=WFS")
 
-layer_name_sitmap1rad <- "Opendata:Mapovaci_sit_-_deleni_1.radu"
+layer_name_sitmap0rad <- "Opendata:Mapovaci_sit_-_zakladni_pole"
 
-getfeature_url_sitmap1rad <- paste0(
+getfeature_url_sitmap0rad <- paste0(
   endpoint,
-  "service=WFS&version=2.0.0&request=GetFeature&typeName=", layer_name_sitmap1rad
+  "service=WFS&version=2.0.0&request=GetFeature&typeName=", layer_name_sitmap0rad
 )
 
-sitmap <- sf::st_read(getfeature_url_sitmap1rad) %>%
+sitmap <- sf::st_read(getfeature_url_sitmap0rad) %>%
   sf::st_transform(
     ., 
     st_crs("+init=epsg:5514")
