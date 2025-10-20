@@ -1,9 +1,17 @@
-
+#----------------------------------------------------------#
+# Plot occurrence -----
+#----------------------------------------------------------#
 map <- ggplot() +
   #⃣ raster background
   tidyterra::geom_spatraster(data = hill) +
   scale_fill_gradientn(
-    colors = scales::alpha(c("white", "grey90", "grey80","grey70", "grey60"), 0.3),  # light hillshade
+    colors = c(
+      scales::alpha("white", 0),        # flat white
+      scales::alpha("grey90", 0.1),
+      scales::alpha("grey80", 0.2),
+      scales::alpha("grey70", 0.4),
+      scales::alpha("grey60", 0.6)      # more visible shadows
+    ),
     na.value = "white",
     guide = "none"
   ) +
@@ -37,7 +45,10 @@ map <- ggplot() +
   ) +
   scale_colour_viridis_c(option = "magma", direction = -1, begin = 0.2) +
   # Coordinate grid
-  coord_sf(crs = st_crs(4326), expand = FALSE) +
+  coord_sf(crs = st_crs(4326), 
+           xlim = c(st_bbox(sitmap)["xmin"], st_bbox(sitmap)["xmax"]),
+           ylim = c(st_bbox(sitmap)["ymin"], st_bbox(sitmap)["ymax"]),
+           expand = FALSE) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 16, face = "bold", color = "grey20", hjust = 0.5),
@@ -47,15 +58,15 @@ map <- ggplot() +
   ) +
   labs(
     title = expression(paste("Rozšíření ", italic("Euoniticellus fulvus"), " (Goeze, 1777)")),
-    subtitle = "Rozšíření před rokem 1975 šrafovaně, pozdější nálezy barevně",
+    subtitle = "Rozšíření před rokem 1975 šedě, pozdější nálezy barevně",
     caption = "Data: Nálezová databáze ochrany přírody AOPK ČR (2025); Mertlík (2020 and 2021)"
   )
 
 print(map)
 
-
-
-# Base plot
+#----------------------------------------------------------#
+# Histogram -----
+#----------------------------------------------------------#
 occ_hist <- ggplot(data_agg, aes(x = year)) +
   geom_histogram(
     binwidth = 1,
