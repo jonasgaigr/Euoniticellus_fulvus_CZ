@@ -33,7 +33,7 @@ map <- ggplot() +
   # Recent points colored by period
   #geom_sf(data = map_data_rec, aes(fill = min_year), color = "black", size = 0.15) +
   geom_sf(
-    data = sf::st_buffer(map_rings_rec, dist = 4000),
+    data = sf::st_buffer(map_rings_rec, dist = 4300),
     aes(fill = min_year),
     color = NA,       # subtle outline for contrast
     size = 3              # outline thickness
