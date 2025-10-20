@@ -2,7 +2,7 @@
 # Install and load packages -----
 #----------------------------------------------------------#
 packages <- c("tidyverse", "pdftools", "RCzechia", "tidyterra", "raster",
-              "ggnewscale")
+              "ggnewscale", "ggrepel")
 
 for (pkg in packages) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
