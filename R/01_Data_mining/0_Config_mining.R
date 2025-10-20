@@ -39,10 +39,6 @@ sitmap <- sf::st_read(getfeature_url_sitmap0rad) %>%
   sf::st_transform(
     ., 
     st_crs("+init=epsg:4326")
-  ) %>%
-  sf::st_filter(
-    .,
-    czechia_border  # crop by the border of Czechia
   )
 
 # Load rayshaded hill
