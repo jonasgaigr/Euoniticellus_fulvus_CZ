@@ -17,28 +17,105 @@ map <- ggplot() +
   # Czechia border
   geom_sf(data = czechia_border, fill = NA, color = "black", size = 0.5) +
   
+  geom_sf(data = sitmap, fill = NA) +
+  
   # Historical polygons (cross-hatch effect)
   geom_sf(data = map_data_hist, fill = "grey30", color = NA, alpha = 0.5) +
   
   # Recent points colored by period
-  geom_sf(data = map_data_rec, aes(fill = max_year), color = "black", size = 0.15) +
-  scale_fill_gradient2(
+  #geom_sf(data = map_data_rec, aes(fill = min_year), color = "black", size = 0.15) +
+  geom_sf(
+    data = st_buffer(map_rings_rec, dist = 2000), 
+    aes(color = min_year),
+    fill = NA,  # hollow circle
+    size = 3
+  ) +
+  scale_color_gradient2(
     name = "Rok prvního nálezu po roce 1975",
     low = "#4575B4", mid = "#FFFFBF", high = "#D73027",
-    midpoint = 2015, na.value = "grey90"
+    midpoint = 2010, na.value = "grey90"
   ) +
-  
+  scale_colour_viridis_c(option = "magma", direction = -1, begin = 0.2) +
   # Coordinate grid
   coord_sf(crs = st_crs(4326), expand = FALSE) +
   theme_minimal() +
   theme(
+    plot.title = element_text(size = 16, face = "bold", color = "grey20", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
     panel.grid.major = element_line(color = "grey80", size = 0.4),
     axis.text = element_text(size = 8)
   ) +
   labs(
-    title = "Rozšíření Euoniticellus fulvus (Goeze, 1777)",
+    title = expression(paste("Rozšíření ", italic("Euoniticellus fulvus"), " (Goeze, 1777)")),
     subtitle = "Rozšíření před rokem 1975 šrafovaně, pozdější nálezy barevně",
     caption = "Data: Nálezová databáze ochrany přírody AOPK ČR (2025); Mertlík (2020 and 2021)"
   )
 
 print(map)
+
+
+
+# Base plot
+occ_hist <- ggplot(data_agg, aes(x = year)) +
+  geom_histogram(
+    binwidth = 1,
+    fill = "palegreen4",
+    alpha = 0.6,
+    color = "white"
+  ) +
+  
+  # Custom theme (you can replace with theme_niwot() if available)
+  theme_minimal(base_size = 13) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.title.y = element_text(margin = margin(r = 10))
+  ) +
+  
+  # Y-axis limits and expansion
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.1))
+  ) +
+  
+  # Vertical line at mean year
+  geom_vline(
+    xintercept = mean(data_agg$year, na.rm = TRUE),
+    linetype = "dotted",
+    colour = "palegreen4",
+    size = 1
+  ) +
+  
+  # Annotation text and arrow
+  annotate(
+    "text",
+    x = mean(data_agg$year, na.rm = TRUE) + 3,
+    y = max(table(data_agg$year)) * 0.7,
+    label = paste0(
+      "The mean observation year\nwas ",
+      round(mean(data_agg$year, na.rm = TRUE))
+    ),
+    hjust = 0,
+    color = "grey20"
+  ) +
+  geom_curve(
+    aes(
+      x = mean(data_agg$year, na.rm = TRUE) + 2,
+      y = max(table(data_agg$year)) * 0.85,
+      xend = mean(data_agg$year, na.rm = TRUE) + 0.3,
+      yend = max(table(data_agg$year)) * 0.8
+    ),
+    arrow = arrow(length = unit(0.07, "inch")),
+    size = 0.7,
+    color = "grey30",
+    curvature = 0.3
+  ) +
+  
+  # Axis labels
+  labs(
+    x = "\nObservation year",
+    y = "Number of occurrences\n"
+  )
+
+occ_hist
+
