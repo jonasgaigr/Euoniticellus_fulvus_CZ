@@ -2,7 +2,7 @@
 # Plot occurrence -----
 #----------------------------------------------------------#
 map <- ggplot() +
-  #⃣ raster background
+  # raster background
   tidyterra::geom_spatraster(data = hill) +
   scale_fill_gradientn(
     colors = c(
@@ -33,16 +33,15 @@ map <- ggplot() +
   # Recent points colored by period
   #geom_sf(data = map_data_rec, aes(fill = min_year), color = "black", size = 0.15) +
   geom_sf(
-    data = st_buffer(map_rings_rec, dist = 2000), 
-    aes(fill = min_year),
+    data = st_buffer(map_rings_rec, dist = 1500), 
+    aes(color = min_year),
     size = 3
   ) +
-  scale_fill_gradient2(
-    name = "Rok prvního nálezu po roce 1975",
+  scale_color_gradient2(
+    name = "Rok prvního nálezu\npo roce 1975\n",
     low = "#4575B4", mid = "#FFFFBF", high = "#D73027",
-    midpoint = 2010, na.value = "grey90"
+    midpoint = 2015, na.value = "grey90"
   ) +
-  scale_fill_viridis_c(option = "magma", direction = -1, begin = 0.2) +
   # Coordinate grid
   coord_sf(crs = st_crs(4326), 
            xlim = c(st_bbox(sitmap)["xmin"], st_bbox(sitmap)["xmax"]),
