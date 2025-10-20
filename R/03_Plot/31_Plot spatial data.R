@@ -65,7 +65,7 @@ map <- ggplot() +
 print(map)
 
 ggsave(
-  filename = "Outputs/euoniticellus_map.png",   # output file name
+  filename = "Outputs/Plots/euoniticellus_map.png",   # output file name
   plot = map,                     # the ggplot object
   width = 8,                            # width in inches
   height = 6,                           # height in inches
