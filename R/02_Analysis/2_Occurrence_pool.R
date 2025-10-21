@@ -143,3 +143,7 @@ map_data_rec <- cz_grid %>%
 
 map_rings_rec <- 
   sf::st_centroid(map_data_rec)
+
+new_occ <- 
+  map_rings_rec %>%
+  dplyr::filter(POLE == 6443)
