@@ -61,6 +61,13 @@ hill <- terra::project(hill_cropped, "EPSG:4326")
 rivers <- RCzechia::reky(resolution = "high") %>% 
   filter(Major)
   
+bohmor_border <- sf::st_read(
+  "Data/Input/Cesko_Moravska_Zemska_Hranice.shp"
+) %>%
+  sf::st_transform(
+    ., 
+    st_crs("+init=epsg:4326")
+  )
 
 #----------------------------------------------------------#
 # Load occurrence data -----
