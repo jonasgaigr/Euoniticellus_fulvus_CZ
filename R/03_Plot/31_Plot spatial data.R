@@ -19,6 +19,9 @@ map <- ggplot() +
   # Allow a new fill scale for points
   ggnewscale::new_scale_fill() +
   
+  # Border between Bohemia and Moravia
+  geom_sf(data = bohmor_border, color = "black", size = 0.25) +
+  
   # Rivers
   geom_sf(data = rivers, color = "steelblue", size = 0.25) +
   
@@ -38,6 +41,12 @@ map <- ggplot() +
     color = NA,       # subtle outline for contrast
     size = 3              # outline thickness
   ) +
+  geom_sf(
+    data = sf::st_buffer(new_occ, dist = 4300),
+    fill = "red",
+    color = NA,       # subtle outline for contrast
+    size = 3  
+  ) +
   scale_fill_gradient2(
     name = "Rok prvního nálezu\npo roce 1975\n",
     low = "#4575B4", mid = "#FFFFBF", high = "#D73027",
@@ -46,7 +55,7 @@ map <- ggplot() +
   scale_fill_viridis_c(
     name = "Rok prvního nálezu\npo roce 1975\n",
     #option = "magma",
-    direction = -1,    # reverse so recent years are lighter or more vivid
+    direction = 1,    # reverse so recent years are lighter or more vivid
     begin = 0.1,
     end = 0.9,
     na.value = "grey90"
