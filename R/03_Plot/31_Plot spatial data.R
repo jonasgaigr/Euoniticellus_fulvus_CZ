@@ -42,7 +42,7 @@ map <- ggplot() +
     size = 3              # outline thickness
   ) +
   geom_sf(
-    data = sf::st_buffer(new_occ, dist = 4300),
+    data = sf::st_buffer(new_occ, dist = 2000),
     fill = "red",
     color = NA,       # subtle outline for contrast
     size = 3  
