@@ -1,0 +1,46 @@
+---
+title: "První nález *Euoniticellus fulvus* (Coleoptera: Scarabaeidae) v západních Čechách po půl století"
+author: "Jonáš Gaigr"
+date: "`r format(Sys.Date(), '%d. %m. %Y')`"
+output:
+  word_document:
+    toc: false
+    number_sections: false
+bibliography: references.bib
+csl: czech_faunistic_author_year.csl
+lang: cs
+---
+
+**Adresa autora:**  
+Agentura ochrany přírody a krajiny ČR, Kaplanova 1931/1, 148 00 Praha 1  
+<jonas.gaigr@gmail.com>
+
+---
+
+# Abstrakt
+
+*Euoniticellus fulvus* Goeze, 1777 is recorded after 57 years from western Bohemia from Horšovský Týn: CZ – Bohemia occ., Horšov, 5 km jižně (6443c), 49°32'32.043"N, 12°54'38.946"E, alluvium of the Plešský stream, PP (Nature Monument) Veský Mlýn, 380 m a.s.l., 8.VII.2025, 1 spec., J. Gaigr leg., det., coll. The examined specimen was collected in horse dung, on a dirt road.
+
+**Key words:** Coleoptera, Scarabaeidae, *Euoniticellus fulvus*, faunistic record, Czech Republic, western Bohemia
+
+---
+
+# Text
+
+*Euoniticellus fulvus* Goeze, 1777. Bohemia occ., Horšov, 5 km jižně (6443c), 49°32'32.043"N, 12°54'38.946"E, koňský trus na cestě, bývalá Horšovská obora, 380 m n.m., 8.VII.2025, 1 ex., J. Gaigr leg. et det. et coll. Lokalita se nachází asi dva kilometry severozápadně od Horšovského Týna a jde o bývalou oboru o rozloze asi 400 hektarů pokrytou mozaikou trvalých lesních porostů, zemědělské půdy, rybníků a lesů (obr. 1). Druh byl nalezen v koňském trusu, společně s *Aphodius (Colobopterus) erraticus* (Linnaeus, 1758), *Aphodius (Eupleurus) subterraneus* (Linnaeus, 1758) a *Onthophagus coenobita*, při náhodném sběru na cestě v lipové aleji. Okolí šotolinové cesty na lokalitě tvoří trvalý travní porost a zemědělská půda. Nejbližší pastvina koní je vzdálena asi 500 metrů.
+
+*Euoniticellus fulvus* (Goeze, 1777) je drobný zástupce vrubounovitých brouků (Scarabaeidae) z podčeledi Scarabaeinae, tribu Oniticellini. Dospělci měří 8–11 mm, tělo je štíhlé, mírně klenuté, se světle žlutohnědými až plavými krovkami a tmavší hlavou a štítem. Na povrchu krovek je jemná, podélná rýhovitost, typická pro rod *Euoniticellus*. Samci mají na hlavě nízký štítkovitý výběžek. Nomenklatoricky byl druh původně popsán Goezem v roce 1777, v minulosti býval řazen také do rodů *Oniticellus* nebo *Copris*, současné taxonomické pojetí stabilně užívá rod *Euoniticellus*. Areál rozšíření zahrnuje velkou část Palearktu od jižní Evropy po Střední Asii, zasahuje do severní Afriky a na Blízký východ. Druh byl cíleně zavlečen a etablován také mimo původní areál v Austrálii, kde byl úspěšně introdukován v rámci biologického programu pro rozklad trusu hospodářských zvířat.
+
+V Česku je vázán na teplé otevřené pastviny a okolí stájí, kde se vyvíjí v trusu velkých savců, převážně koní a skotu. V posledním Červeném seznamu hodnocen jako zranitelný [@hejda2017]. Na přelomu století byl známý výskyt pouze na jižní Moravě. Množství publikací v posledním desetiletí však dokládá pokračující expanzi druhu [@mertlik2020]. Z území západních Čech. Výše uvedený nález je prvním publikovaným dokladem na území Plzeňského a Karlovarského kraje po 56 letech.
+
+---
+
+# Poděkování
+
+Děkuji K. Chobotovi (AOPK ČR, Praha) za revizi determinace ostatních druhů ve sběru a cenné připomínky k rukopisu práce.
+
+---
+
+# Literatura
+
+

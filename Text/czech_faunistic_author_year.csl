@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0">
+  <info>
+    <title>Czech Faunistic Author-Year</title>
+    <id>http://www.zoo.cz/styles/czech-faunistic-author-year</id>
+    <link href="http://www.zoo.cz/styles/czech-faunistic-author-year" rel="self"/>
+    <author>
+      <name>Jonáš Gaigr &amp; GPT-5</name>
+    </author>
+    <category citation-format="author-date"/>
+    <updated>2025-10-23</updated>
+  </info>
+
+  <!-- Citation layout -->
+  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true">
+    <layout prefix="(" suffix=")" delimiter="; ">
+      <group delimiter=", ">
+        <names variable="author">
+          <name form="short" name-as-sort-order="all" initialize-with="." delimiter=", " text-case="uppercase"/>
+        </names>
+        <date variable="issued">
+          <date-part name="year"/>
+        </date>
+      </group>
+    </layout>
+  </citation>
+
+  <!-- Bibliography layout -->
+  <bibliography hanging-indent="false" et-al-min="3" et-al-use-first="3">
+    <sort>
+      <key variable="author"/>
+      <key variable="issued"/>
+    </sort>
+    <layout suffix="." delimiter="\n">
+      <!-- Author and year -->
+      <group delimiter=" ">
+        <names variable="author">
+          <name form="long" and="symbol" delimiter=", " initialize-with="." text-case="uppercase"/>
+        </names>
+        <date variable="issued">
+          <date-part name="year"/>
+        </date>
+      </group>
+      <text variable="title" suffix="."/>
+      <text variable="container-title" suffix="."/>
+      <group delimiter=", ">
+        <text variable="volume"/>
+        <text variable="issue"/>
+        <text variable="page"/>
+      </group>
+      <group delimiter=", ">
+        <text variable="publisher"/>
+        <text variable="publisher-place"/>
+      </group>
+      <text variable="page" prefix=", " suffix=" pp."/>
+      <group prefix=" Online: " delimiter=" ">
+        <text variable="URL"/>
+        <date variable="accessed" prefix=" (navštíveno " suffix=")">
+          <date-part name="day" form="numeric-leading-zeros"/>
+          <date-part name="month" form="numeric-leading-zeros" prefix="."/>
+          <date-part name="year" prefix="."/>
+        </date>
+      </group>
+      <text variable="note" prefix=". [" suffix="]"/>
+    </layout>
+  </bibliography>
+</style>
