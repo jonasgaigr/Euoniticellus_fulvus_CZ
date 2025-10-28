@@ -20,13 +20,14 @@ map <- ggplot() +
   ggnewscale::new_scale_fill() +
   
   # Border between Bohemia and Moravia
-  geom_sf(data = bohmor_border, color = "black", size = 0.25) +
+  geom_sf(data = bohmor_border, fill = NA , color = "grey20", size = 0.25, alpha = 0.8) +
   
   # Rivers
-  geom_sf(data = rivers, color = "steelblue", size = 0.25) +
+  geom_sf(data = waters, color = "steelblue", fill = "lightblue", size = 0.05) +
+  geom_sf(data = rivers, color = "steelblue", size = 0.3) +
   
   # Czechia border
-  geom_sf(data = czechia_border, fill = NA, color = "black", size = 0.5) +
+  geom_sf(data = czechia_border, fill = NA, color = "grey20", size = 0.5, alpha = 0.8) +
   
   geom_sf(data = sitmap, fill = NA) +
   
