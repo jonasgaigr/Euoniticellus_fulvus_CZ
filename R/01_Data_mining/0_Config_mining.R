@@ -59,12 +59,14 @@ hill_cropped <- terra::crop(hill, czech_bbox)
 hill <- terra::project(hill_cropped, "EPSG:4326")
 
 rivers <- RCzechia::reky(resolution = "high") %>% 
-  filter(Major == TRUE | NAZEV == "Lužnice")
+  filter(Major == TRUE | NAZEV %in% c("Lužnice", "Úhlava", "Úslava", "Radbuza", "Střela",
+                                      "Oslava", "Jihlava", "Orlice", "Divoká Orlice",
+                                      "Tichá Orlice", "Bečva", "Rožnovská Bečva"))
 
 waters <- RCzechia::plochy() %>%
   sf::st_filter(., rivers) %>%
   dplyr::mutate(area = units::drop_units(sf::st_area(geometry))) %>%
-  dplyr::filter(area >= 50000)
+  dplyr::filter(area >= 25000)
   
 bohmor_border <- sf::st_read(
   "Data/Input/Cesko_Moravska_Zemska_Hranice.shp"
