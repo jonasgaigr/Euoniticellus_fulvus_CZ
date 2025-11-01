@@ -21,7 +21,7 @@
              delimiter=", "
              delimiter-precedes-last="contextual">
         <name and="symbol" initialize-with="">
-          <name-part name="family" text-case="uppercase"/>
+          <name-part name="family" text-case="capitalize-first"/>
         </name>
       </names>
       <date variable="issued">
@@ -38,8 +38,8 @@
             name-as-sort-order="all"
             sort-separator=" "
             initialize-with=".">
-        <name-part name="family" text-case="uppercase"/>
-        <name-part name="given" text-case="uppercase" prefix=" "/>
+        <name-part name="family" text-case="capitalize-first"/>
+        <name-part name="given" text-case="capitalize-first" prefix=" "/>
       </name>
     </names>
   </macro>
@@ -111,8 +111,8 @@
           <group prefix=" In: " delimiter=" ">
             <names variable="editor" suffix=":">
                <name and="symbol" initialize-with="." name-as-sort-order="all">
-                 <name-part name="family" text-case="uppercase"/>
-                 <name-part name="given" text-case="uppercase" prefix=" "/>
+                 <name-part name="family" text-case="capitalize-first"/>
+                 <name-part name="given" text-case="capitalize-first" prefix=" "/>
                </name>
                <label form="short" prefix=" (" suffix=")" text-case="lowercase"/>
              </names>
