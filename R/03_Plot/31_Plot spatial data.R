@@ -42,12 +42,12 @@ map <- ggplot() +
     color = NA,       # subtle outline for contrast
     size = 3              # outline thickness
   ) +
-  geom_sf(
-    data = sf::st_buffer(new_occ, dist = 2000),
-    fill = "red",
-    color = NA,       # subtle outline for contrast
-    size = 3  
-  ) +
+  #geom_sf(
+  #  data = sf::st_buffer(new_occ, dist = 2000),
+  #  fill = "red",
+  #  color = NA,       # subtle outline for contrast
+  #  size = 3  
+  #) +
   scale_fill_gradient2(
     name = "Rok prvního nálezu\npo roce 1975\n",
     low = "#4575B4", mid = "#FFFFBF", high = "#D73027",
@@ -72,12 +72,12 @@ map <- ggplot() +
     plot.subtitle = element_text(hjust = 0.5),
     panel.grid.major = element_line(color = "grey80", size = 0.4),
     axis.text = element_text(size = 8)
-  ) +
-  labs(
-    title = expression(paste("Rozšíření ", italic("Euoniticellus fulvus"), " (Goeze, 1777)")),
-    subtitle = "Rozšíření před rokem 1975 šedě, pozdější nálezy barevně",
-    caption = "Data: Nálezová databáze ochrany přírody AOPK ČR (2025); Mertlík (2020 and 2021)"
-  )
+  ) #+
+  #labs(
+  #  title = expression(paste("Rozšíření ", italic("Euoniticellus fulvus"), " (Goeze, 1777)")),
+  #  subtitle = "Rozšíření před rokem 1975 šedě, pozdější nálezy barevně",
+  #  caption = "Data: Nálezová databáze ochrany přírody AOPK ČR (2025); Mertlík (2020 and 2021)"
+  #)
 
 print(map)
 
