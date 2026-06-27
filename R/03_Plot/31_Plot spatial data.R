@@ -49,12 +49,12 @@ map <- ggplot() +
   #  size = 3  
   #) +
   scale_fill_gradient2(
-    name = "Rok prvního nálezu\npo roce 1975\n",
+    name = "Rok prvního nálezu\npo roce 1975\nYear of the first occurrence\nafter 1975\n",
     low = "#4575B4", mid = "#FFFFBF", high = "#D73027",
     midpoint = 2015, na.value = "grey90"
   ) +
   scale_fill_viridis_c(
-    name = "Rok prvního nálezu\npo roce 1975\n",
+    name = "Rok prvního nálezu\npo roce 1975\nYear of the first occurrence\nafter 1975\n",
     #option = "magma",
     direction = 1,    # reverse so recent years are lighter or more vivid
     begin = 0.1,
